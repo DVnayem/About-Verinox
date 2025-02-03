@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verinox | Enterprise Crypto Mission Platform</title>
+    <style>
+        :root {
+            --primary: #0A2540;
+            --secondary: #635BFF;
+            --accent: #00D4FF;
+            --text: #2E3A59;
+            --surface: #FFFFFF;
+            --background: #F9FAFF;
+            --error: #FF4D4F;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background: var(--background);
+            color: var(--text);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Centered Animated Header */
+        .hero-section {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(45deg, #0A1830 0%, #0A2540 100%);
+            padding: 8rem 0 6rem;
+        }
+
+        .hero-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .carved-text {
+            display: inline-block;
+            position: relative;
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            text-transform: uppercase;
+            color: transparent;
+            -webkit-text-stroke: 2px rgba(255,255,255,0.1);
+            text-shadow: 3px 3px 0 rgba(0,0,0,0.2);
+            animation: textFloat 6s ease-in-out infinite;
+            margin: 0 auto 1rem;
+            line-height: 1.1;
+            letter-spacing: 0.1em;
+            max-width: 90%;
+        }
+
+        .carved-text::before {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            color: white;
+            -webkit-text-stroke: 0;
+            clip-path: polygon(0 0, 100% 0, 100% 50%, 0 50%);
+            animation: carvedLight 5s linear infinite;
+        }
+
+        .carved-text::after {
+            content: '';
+            position: absolute;
+            top: -20%;
+            left: -20%;
+            width: 140%;
+            height: 140%;
+            background: linear-gradient(45deg,
+                transparent 45%,
+                rgba(255,255,255,0.1) 50%,
+                transparent 55%
+            );
+            mix-blend-mode: soft-light;
+            animation: shine 8s ease-in-out infinite;
+        }
+
+        @keyframes textFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes carvedLight {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 0.4; }
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%) rotate(25deg); }
+            80% { transform: translateX(100%) rotate(25deg); }
+            100% { transform: translateX(100%) rotate(25deg); }
+        }
+
+        .hero-content p {
+            position: relative;
+            z-index: 2;
+            font-size: 1.25rem;
+            max-width: 600px;
+            margin: 1.5rem auto;
+            color: rgba(255,255,255,0.9);
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        /* Particle Background */
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            animation: particleFloat linear infinite;
+        }
+
+        @keyframes particleFloat {
+            from { transform: translateY(-100%); }
+            to { transform: translateY(100vh); }
+        }
+
+        /* Feature Grid */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+            gap: 2rem;
+            margin: 4rem 0;
+        }
+
+        .feature-card {
+            background: var(--surface);
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 24px rgba(10, 37, 64, 0.06);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
+            border: 1px solid rgba(99, 91, 255, 0.08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--secondary);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 32px rgba(99, 91, 255, 0.12);
+        }
+
+        .feature-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .feature-card h3 {
+            color: var(--primary);
+            margin: 0 0 1rem 0;
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .feature-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--secondary);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--surface);
+            flex-shrink: 0;
+        }
+
+        /* Stats Section */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 2rem;
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--accent) 100%);
+            padding: 3rem;
+            border-radius: 1rem;
+            color: var(--surface);
+            margin: 4rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stats-grid::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, rgba(0,0,0,0.05) 0%, rgba(255,255,255,0.05) 100%);
+            pointer-events: none;
+        }
+
+        .stat-item {
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        /* CTA Section */
+        .cta-section {
+            text-align: center;
+            margin: 6rem 0 4rem;
+        }
+
+        .cta-button {
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--accent) 100%);
+            color: var(--surface);
+            padding: 0.75em 1.5em;
+            border-radius: 0.6em;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6em;
+            box-shadow: 0 4px 16px rgba(99, 91, 255, 0.2);
+            border: 1.5px solid rgba(255,255,255,0.1);
+            font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+            white-space: nowrap;
+            width: auto;
+            line-height: 1.4;
+            max-width: 95%;
+            margin: 0 auto;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 6px 20px rgba(99, 91, 255, 0.3);
+        }
+
+        /* Lists */
+        .feature-card ul {
+            list-style: none;
+            padding: 0;
+            margin: 1rem 0 0 0;
+        }
+
+        .feature-card li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .feature-card li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--secondary);
+            font-weight: 700;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            color: #64748B;
+            font-size: 0.9rem;
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(100, 116, 139, 0.1);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1.5rem;
+            }
+
+            .hero-section {
+                padding: 4rem 0 2rem;
+            }
+
+            .stats-grid {
+                padding: 2rem;
+                margin: 3rem 0;
+            }
+
+            .feature-card {
+                padding: 1.5rem;
+            }
+
+            .cta-section {
+                margin: 4rem 0;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .carved-text::after {
+                animation-duration: 12s;
+            }
+
+         @media (max-width: 768px) {
+            .cta-button {
+                padding: 0.6em 1.2em;
+                font-size: clamp(0.85rem, 3.5vw, 1rem);
+                border-radius: 0.5em;
+                width: fit-content;
+                min-width: 160px;
+                justify-content: center;
+                white-space: normal;
+                line-height: 1.3;
+            }
+        }
+
+	@media (max-width: 480px) {
+            .cta-button {
+                width: 90%;
+                max-width: 280px;
+                white-space: normal;
+                padding: 0.8em;
+                display: flex;
+                gap: 0.5em;
+            }
+        }
+    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header class="hero-section">
+        <div class="particles" id="particles"></div>
+        <div class="hero-content container">
+            <h1 class="carved-text" data-text="Welcome to Verinox">Welcome to Verinox</h1>
+            <p>Secure, Verified, and Reward-Driven Ecosystem</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="feature-grid">
+            <article class="feature-card">
+                <h3><span class="feature-icon" aria-hidden="true"><i class="fas fa-user-check"></i></span>Human-Verified Missions</h3>
+                <p>Three-stage verification process combining AI validation and expert manual review for mission integrity.</p>
+            </article>
+            
+            <article class="feature-card">
+                <h3><span class="feature-icon" aria-hidden="true"><i class="fas fa-radar"></i></span>Real-Time Analytics</h3>
+                <p>Live mission dashboard with encrypted activity logging and predictive completion analytics.</p>
+            </article>
+
+            <article class="feature-card">
+                <h3><span class="feature-icon" aria-hidden="true"><i class="fas fa-layer-group"></i></span>Dynamic Tier System</h3>
+                <p>Adaptive difficulty levels with intelligent reward scaling based on mission performance history.</p>
+            </article>
+
+            <article class="feature-card">
+                <h3><span class="feature-icon" aria-hidden="true"><i class="fas fa-shield-check"></i></span>Advanced Protection</h3>
+                <p>Multi-factor device fingerprinting and behavioral biometric analysis for mission security.</p>
+            </article>
+        </section>
+
+        <section class="stats-grid" aria-label="Platform Statistics">
+            <div class="stat-item">
+                <div class="stat-value">1,289+</div>
+                <div class="stat-label">Completed Missions</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">89.7%</div>
+                <div class="stat-label">Success Rate</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">99.9%</div>
+                <div class="stat-label">Uptime Guarantee</div>
+            </div>
+        </section>
+
+        <section class="feature-grid">
+            <article class="feature-card">
+                <h3><span class="feature-icon" aria-hidden="true"><i class="fas fa-tasks"></i></span>Mission Portfolio</h3>
+                <ul>
+                    <li>Identity Verification Challenges</li>
+                    <li>Distributed Resource Mining</li>
+                    <li>Strategic Gaming Missions</li>
+                    <li>Real-Time Activity Validations</li>
+                    <li>Hardware-Locked Security</li>
+                </ul>
+            </article>
+
+            <article class="feature-card">
+                <h3><span class="feature-icon" aria-hidden="true"><i class="fas fa-lock-alt"></i></span>Security Stack</h3>
+                <ul>
+                    <li>35-second activity verification</li>
+                    <li>Smart Contract Verification</li>
+                    <li>Real-Time Threat Detection</li>
+                    <li>Multi-Chain Settlement</li>
+                    <li>Automated Compliance Checks</li>
+                </ul>
+            </article>
+        </section>
+
+        <section class="cta-section">
+            <h2>Start Earning TCR Rewards</h2>
+            <p>Join our growing community of verified mission operators</p>
+            <a href="https://t.me/Verinox_boT/App" class="cta-button" aria-label="Join Verinox on Telegram">
+                <i class="fab fa-telegram-plane" aria-hidden="true"></i>
+                Launch Mission Console
+            </a>
+        </section>
+    </main>
+
+    <footer class="container">
+        <div class="disclaimer">
+            <p>Verinox adheres to GDPR and global compliance standards. TCR points are utility tokens with no monetary value. Service availability varies by jurisdiction.</p>
+            <p>&copy; 2024 Verinox Technologies. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        function createParticles() {
+            const container = document.getElementById('particles');
+            const particleCount = 30;
+            
+            for(let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                const size = Math.random() * 3 + 1;
+                const left = Math.random() * 100;
+                const duration = Math.random() * 5 + 5;
+                const delay = Math.random() * -5;
+                
+                particle.style.cssText = `
+                    width: ${size}px;
+                    height: ${size}px;
+                    left: ${left}%;
+                    animation-duration: ${duration}s;
+                    animation-delay: ${delay}s;
+                `;
+                
+                container.appendChild(particle);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', createParticles);
+    </script>
+</body>
+</html>
